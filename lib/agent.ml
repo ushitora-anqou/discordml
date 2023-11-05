@@ -23,6 +23,7 @@ type init_arg = {
   consumer : consumer;
   ffmpeg_path : string;
   ffmpeg_options : string list;
+  youtubedl_path : string;
 }
 
 type call_msg =
@@ -51,13 +52,10 @@ type state = {
   consumer : consumer;
   ffmpeg_path : string;
   ffmpeg_options : string list;
+  youtubedl_path : string;
 }
 
-let spawn_youtubedl process_mgr ~sw ~stdout url =
-  let executable =
-    Sys.getenv_opt "YOUTUBEDL_PATH"
-    |> Option.value ~default:"/usr/bin/youtube-dl"
-  in
+let spawn_youtubedl process_mgr ~sw ~stdout ~path:(executable : string) url =
   Eio.Process.spawn ~sw process_mgr ~stdout ~executable
     [ executable; "-f"; "bestaudio"; "-o"; "-"; "-q"; "--no-warnings"; url ]
 
@@ -71,13 +69,20 @@ class t =
     inherit [init_arg, msg, state] Actaa.Gen_server.behaviour
 
     method private init env ~sw
-        { token; intents; consumer; ffmpeg_path; ffmpeg_options } =
+        {
+          token;
+          intents;
+          consumer;
+          ffmpeg_path;
+          ffmpeg_options;
+          youtubedl_path;
+        } =
       let st = State.start env ~sw in
       let gw =
         Gateway.spawn env ~sw ~token ~intents ~state:st
           ~consumer:(self :> Gateway.consumer)
       in
-      { st; gw; consumer; ffmpeg_path; ffmpeg_options }
+      { st; gw; consumer; ffmpeg_path; ffmpeg_options; youtubedl_path }
 
     method! private handle_cast env ~sw ({ st; gw; consumer; _ } as state) =
       function
@@ -111,7 +116,10 @@ class t =
               | `Pipe (src : Eio.Flow.source_ty Eio.Resource.t) -> play src
               | `Ytdl url ->
                   let src, sink = Eio.Process.pipe ~sw process_mgr in
-                  let _p1 = spawn_youtubedl process_mgr ~sw ~stdout:sink url in
+                  let _p1 =
+                    spawn_youtubedl process_mgr ~sw ~stdout:sink
+                      ~path:state.youtubedl_path url
+                  in
                   play src;
                   Eio.Flow.close src;
                   Eio.Flow.close sink));
