@@ -2,6 +2,14 @@
 
 A [Discord](https://discord.com/) library purely written in OCaml, based on [Eio](https://github.com/ocaml-multicore/eio).
 
+## Usage
+
+Discord.ml has not yet been published to OPAM, so you need to pin this GitHub repository before using it:
+
+```
+opam pin https://github.com/ushitora-anqou/discordml.git#master
+```
+
 ## Example
 
 A music bot for YouTube can be written as follows
