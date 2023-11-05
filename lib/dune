@@ -1,0 +1,33 @@
+(library
+ (name discord)
+ (preprocess
+  (pps ppx_deriving.make ppx_deriving.show ppx_deriving.enum ppx_yojson_conv))
+ (libraries
+  actaa
+  astring
+  base64
+  cohttp
+  cohttp-eio
+  cstruct
+  ctypes
+  ctypes-foreign
+  domain-name
+  eio
+  eio.core
+  eio.unix
+  ipaddr
+  logs
+  logs.fmt
+  mirage-crypto-rng
+  mirage-clock-unix
+  ocplib-endian
+  ptime
+  sodium
+  tls
+  tls-eio
+  unix
+  uri
+  websocket
+  x509
+  yojson)
+ (flags :standard -cclib -lopus))

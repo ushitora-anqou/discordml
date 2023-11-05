@@ -1,0 +1,12 @@
+(executable
+ (public_name music)
+ (name main)
+ (libraries
+  discord
+  eio
+  eio.core
+  eio.unix
+  eio_main
+  logs
+  mirage-crypto-rng-eio)
+ (flags :standard -cclib -lopus))
