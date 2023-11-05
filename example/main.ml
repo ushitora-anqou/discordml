@@ -50,12 +50,14 @@ let () =
     Discord.Intent.encode
       [ GUILDS; GUILD_VOICE_STATES; GUILD_MESSAGES; MESSAGE_CONTENT ]
   in
+  let youtubedl_path = Sys.getenv_opt "YOUTUBEDL_PATH" in
+  let ffmpeg_path = Sys.getenv_opt "FFMPEG_PATH" in
 
   Eio_main.run @@ fun env ->
   Mirage_crypto_rng_eio.run (module Mirage_crypto_rng.Fortuna) env @@ fun () ->
   Eio.Switch.run @@ fun sw ->
   let _consumer : _ Discord.Consumer.t =
-    Discord.Consumer.start env ~sw ~token ~intents
+    Discord.Consumer.start env ~sw ~token ~intents ?ffmpeg_path ?youtubedl_path
       (fun () -> ())
       (handle_event token)
   in
