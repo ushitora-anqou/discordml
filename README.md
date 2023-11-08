@@ -83,3 +83,7 @@ opam switch create --no-install . 5.0.0
 opam install . --deps-only
 dune build example/main.exe
 ```
+
+## Note
+
+Discord.ml was originally written for a Discord bot [Yomer](https://github.com/ushitora-anqou/yomer), which reads text messages aloud.
