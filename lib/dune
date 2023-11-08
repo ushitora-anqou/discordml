@@ -1,4 +1,5 @@
 (library
+ (public_name discord)
  (name discord)
  (preprocess
   (pps ppx_deriving.make ppx_deriving.show ppx_deriving.enum ppx_yojson_conv))
