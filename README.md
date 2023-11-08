@@ -16,14 +16,17 @@ A music bot for YouTube can be written as follows
 (see `example` directory for complete code):
 
 ```ocaml
+type command = Ping | Join | Leave | Play of string (* youtube url *)
+
+let parse_command s = (* ... snip ... *)
+
 let handle_event token env ~sw:_ agent state =
   let open Discord.Event in
   function
   | Dispatch (MESSAGE_CREATE msg) -> (
       let guild_id = Option.get msg.guild_id in
-      let parsed = String.split_on_char ' ' msg.content in
-      match parsed with
-      | [ "!ping" ] ->
+      match parse_command msg.content with
+      | Ok Ping ->
           Logs.info (fun m -> m "ping");
           if
             Discord.Rest.make_create_message_param
@@ -33,7 +36,7 @@ let handle_event token env ~sw:_ agent state =
             |> Result.is_error
           then Logs.err (fun m -> m "Failed to send pong");
           state
-      | [ "!join" ] ->
+      | Ok Join ->
           (match
              agent
              |> Discord.Agent.get_voice_states ~guild_id ~user_id:msg.author.id
@@ -45,10 +48,10 @@ let handle_event token env ~sw:_ agent state =
               | Some channel_id ->
                   agent |> Discord.Agent.join_channel ~guild_id ~channel_id));
           state
-      | [ "!leave" ] ->
+      | Ok Leave ->
           agent |> Discord.Agent.leave_channel ~guild_id;
           state
-      | [ "!play"; url ] ->
+      | Ok (Play url) ->
           Logs.info (fun m -> m "Playing %s" url);
           agent |> Discord.Agent.play_voice ~guild_id ~src:(`Ytdl url);
           state
