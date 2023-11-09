@@ -48,5 +48,5 @@ pin-depends: [
   [ "cohttp.6.0.0~alpha2" "git+https://github.com/mirage/ocaml-cohttp#v6.0.0_beta1" ]
   [ "cohttp-eio.6.0.0~alpha2" "git+https://github.com/mirage/ocaml-cohttp#v6.0.0_beta1" ]
   [ "sodium.dev" "git+https://github.com/ahrefs/ocaml-sodium#734eccbb47e7545a459a504188f1da8dc0bd018e" ]
-  [ "actaa.dev" "git+https://github.com/ushitora-anqou/actaa#76e1a4f0512b4b91e0b816f44fadd08b9d01ea2d" ]
+  [ "actaa.dev" "git+https://github.com/ushitora-anqou/actaa#7535a7718d846fa5398b47bdc9285ec99632152d" ]
 ]

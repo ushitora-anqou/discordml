@@ -128,7 +128,7 @@ class t =
           Gateway.force_resume gw;
           `NoReply state
 
-    method! private handle_call _env ~sw:_ state =
+    method! private handle_call _env ~sw:_ _from state =
       function
       | `GetVoiceStates { guild_id; user_id } ->
           `Reply

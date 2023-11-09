@@ -26,7 +26,7 @@ module Voice_states = struct
       inherit [init_arg, msg, state] Actaa.Gen_server.behaviour
       method private init _env ~sw:_ () = { store = StringMap.empty }
 
-      method! private handle_call _env ~sw:_ state =
+      method! private handle_call _env ~sw:_ _from state =
         function
         | `Get (guild_id, user_id) ->
             let vstate =
@@ -108,7 +108,7 @@ module Voice = struct
         R.start env ~sw r;
         { r; m = StringMap.empty }
 
-      method! private handle_call _env ~sw:_ state =
+      method! private handle_call _env ~sw:_ _from state =
         function
         | `Register (key, process) ->
             let is_correctly_registered = R.register state.r key process in
@@ -154,7 +154,7 @@ struct
       method private init _env ~sw:_ () = { store = Map.empty }
       method! private terminate _ ~sw:_ _state _reason = ()
 
-      method! private handle_call _env ~sw:_ state =
+      method! private handle_call _env ~sw:_ _from state =
         function
         | `Get key -> `Reply (`Get (Map.find_opt key state.store), state)
         | `Set (key, value) -> (

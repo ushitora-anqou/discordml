@@ -205,7 +205,7 @@ class t =
 
     method! private terminate _ ~sw:_ state _reason = Eio.Net.close state.socket
 
-    method! private handle_call _env ~sw:_ state =
+    method! private handle_call _env ~sw:_ _from state =
       function
       | `DiscoverIP ->
           let addr = discover_ip state.ssrc (udp_send state) (udp_recv state) in
