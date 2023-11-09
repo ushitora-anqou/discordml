@@ -41,7 +41,7 @@ open Ppx_yojson_conv_lib.Yojson_conv.Primitives
 
 type create_message_param = {
   content : string option;
-  embeds : Object.embed list option; [@yojson.option]
+  embeds : Entity.embed list option; [@yojson.option]
 }
 [@@deriving make, yojson]
 
@@ -49,29 +49,29 @@ let create_message (env : Eio_unix.Stdenv.base) ~token channel_id p =
   request env ~token "create_message" ~meth:`POST
     ~body:(yojson_of_create_message_param p)
     ("/channels/" ^ channel_id ^ "/messages")
-    Object.message_of_yojson
+    Entity.message_of_yojson
 
 let get_user (env : Eio_unix.Stdenv.base) ~token ~user_id =
   request env ~token __FUNCTION__ ~meth:`GET ("/users/" ^ user_id)
-    Object.user_of_yojson
+    Entity.user_of_yojson
 
 let get_guild_member (env : Eio_unix.Stdenv.base) ~token ~user_id ~guild_id =
   request env ~token __FUNCTION__ ~meth:`GET
     ("/guilds/" ^ guild_id ^ "/members/" ^ user_id)
-    Object.guild_member_of_yojson
+    Entity.guild_member_of_yojson
 
 let get_guild_roles (env : Eio_unix.Stdenv.base) ~token ~guild_id =
   request env ~token __FUNCTION__ ~meth:`GET
     ("/guilds/" ^ guild_id ^ "/roles")
-    (fun x -> x |> Yojson.Safe.Util.to_list |> List.map Object.role_of_yojson)
+    (fun x -> x |> Yojson.Safe.Util.to_list |> List.map Entity.role_of_yojson)
 
 let get_guild_channels (env : Eio_unix.Stdenv.base) ~token ~guild_id =
   request env ~token __FUNCTION__ ~meth:`GET
     ("/guilds/" ^ guild_id ^ "/channels")
     (fun x ->
-      x |> Yojson.Safe.Util.to_list |> List.map Object.channel_of_yojson)
+      x |> Yojson.Safe.Util.to_list |> List.map Entity.channel_of_yojson)
 
 let get_channel (env : Eio_unix.Stdenv.base) ~token ~channel_id =
   request env ~token __FUNCTION__ ~meth:`GET
     ("/channels/" ^ channel_id)
-    Object.channel_of_yojson
+    Entity.channel_of_yojson

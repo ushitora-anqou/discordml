@@ -34,7 +34,7 @@ type call_msg =
 type call_reply =
   [ `GetVoiceStates of Event.dispatch_voice_state_update option
   | `GetAllVoiceStates of Event.dispatch_voice_state_update StringMap.t
-  | `Me of Object.user option ]
+  | `Me of Entity.user option ]
 
 type cast_msg =
   [ `Event of Event.t

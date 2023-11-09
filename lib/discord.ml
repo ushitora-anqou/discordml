@@ -37,7 +37,7 @@ module Agent = Agent
 module Consumer = Consumer
 module Event = Event
 module Intent = Intent
-module Object = Object
+module Entity = Entity
 module Rest = Rest
 
 let voice_frame_size = Voice_udp_stream.frame_size

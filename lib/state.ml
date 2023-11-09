@@ -177,7 +177,7 @@ end
 
 module Me_kv = struct
   type key = unit
-  type value = Object.user
+  type value = Entity.user
 
   let compare () () = 0
 end

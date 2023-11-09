@@ -3,7 +3,7 @@ open Ppx_yojson_conv_lib.Yojson_conv.Primitives
 
 type dispatch_ready = {
   v : int;
-  user : Object.user;
+  user : Entity.user;
   guilds : json_any;
   session_id : string;
   resume_gateway_url : string;
@@ -23,7 +23,7 @@ type dispatch_voice_state_update = {
   channel_id : string option;
   user_id : string;
   session_id : string;
-  member : Object.guild_member option; [@yojson.option]
+  member : Entity.guild_member option; [@yojson.option]
   self_stream : bool option; [@yojson.option]
   self_mute : bool option; [@yojson.option]
   self_deaf : bool option; [@yojson.option]
@@ -51,11 +51,11 @@ type dispatch_message_update = { id : string; channel_id : string }
 type dispatch =
   | CHANNEL_TOPIC_UPDATE of dispatch_channel_topic_update
   | GUILD_CREATE of dispatch_guild_create
-  | MESSAGE_CREATE of Object.message
+  | MESSAGE_CREATE of Entity.message
   | MESSAGE_UPDATE of dispatch_message_update
   | READY of dispatch_ready
   | RESUMED of dispatch_dummy
-  | THREAD_CREATE of Object.channel
+  | THREAD_CREATE of Entity.channel
   | VOICE_CHANNEL_STATUS_UPDATE of dispatch_voice_channel_status_update
   | VOICE_SERVER_UPDATE of dispatch_voice_server_update
   | VOICE_STATE_UPDATE of dispatch_voice_state_update

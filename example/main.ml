@@ -19,7 +19,7 @@ let handle_event token env ~sw:_ agent state =
           Logs.info (fun m -> m "ping");
           if
             Discord.Rest.make_create_message_param
-              ~embeds:[ Discord.Object.make_embed ~description:"pong" () ]
+              ~embeds:[ Discord.Entity.make_embed ~description:"pong" () ]
               ()
             |> Discord.Rest.create_message env ~token msg.channel_id
             |> Result.is_error
