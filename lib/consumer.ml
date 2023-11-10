@@ -2,6 +2,7 @@ type 'user_state user_handler =
   Eio_unix.Stdenv.base ->
   sw:Eio.Switch.t ->
   Agent.t ->
+  Rest.t ->
   'user_state ->
   Event.t ->
   'user_state
@@ -24,6 +25,7 @@ type msg = basic_msg
 
 type 'user_state state = {
   agent : Agent.t;
+  rest : Rest.t;
   user_state : 'user_state;
   user_handler : 'user_state user_handler;
 }
@@ -55,12 +57,15 @@ class ['user_state] t =
                ffmpeg_options;
                youtubedl_path;
              };
+      let rest = Rest.start env ~sw ~max_running:5 ~token in
       let user_state = user_init () in
-      { agent; user_state; user_handler }
+      { agent; rest; user_state; user_handler }
 
     method! private handle_cast env ~sw state event =
       let user_state =
-        try state.user_handler env ~sw state.agent state.user_state event
+        try
+          state.user_handler env ~sw state.agent state.rest state.user_state
+            event
         with e ->
           Logs.err (fun m ->
               m "User consumer failed: %s\n%s" (Printexc.to_string e)

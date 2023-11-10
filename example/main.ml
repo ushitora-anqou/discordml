@@ -9,7 +9,7 @@ let parse_command s =
   | [ "!play"; url ] -> Ok (Play url)
   | _ -> Error "Invalid command"
 
-let handle_event token env ~sw:_ agent state =
+let handle_event _env ~sw:_ agent rest state =
   let open Discord.Event in
   function
   | Dispatch (MESSAGE_CREATE msg) -> (
@@ -21,7 +21,7 @@ let handle_event token env ~sw:_ agent state =
             Discord.Rest.make_create_message_param
               ~embeds:[ Discord.Entity.make_embed ~description:"pong" () ]
               ()
-            |> Discord.Rest.create_message env ~token msg.channel_id
+            |> Discord.Rest.create_message msg.channel_id rest
             |> Result.is_error
           then Logs.err (fun m -> m "Failed to send pong");
           state
@@ -69,6 +69,6 @@ let () =
   let _consumer : _ Discord.Consumer.t =
     Discord.Consumer.start env ~sw ~token ~intents ?ffmpeg_path ?youtubedl_path
       (fun () -> ())
-      (handle_event token)
+      handle_event
   in
   ()
