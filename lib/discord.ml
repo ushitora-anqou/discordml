@@ -1,5 +1,5 @@
 (*
-  Architecture of Discord module:
+   Architecture of Discord module:
     - Fiber Gateway (x 1)
     - Fiber VoiceGateway (x # of guilds with voice)
     - Fiber VoiceUDPStream (x # of guilds with voice)
@@ -39,6 +39,7 @@ module Event = Event
 module Intent = Intent
 module Entity = Entity
 module Rest = Rest
+module Openai = Openai
 
 let voice_frame_size = Voice_udp_stream.frame_size
 let voice_num_burst_frames = Voice_udp_stream.num_burst_frames
