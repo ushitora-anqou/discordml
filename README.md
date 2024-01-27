@@ -2,7 +2,10 @@
 
 A [Discord](https://discord.com/) library purely written in OCaml, based on [Eio](https://github.com/ocaml-multicore/eio).
 
-## Usage
+## Getting Started
+
+### Prerequisites
+- [`libopus`](https://github.com/xiph/opus?tab=readme-ov-file) installed properly.
 
 Discord.ml has not yet been published to OPAM, so you need to pin this GitHub repository before using it:
 
